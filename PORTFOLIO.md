@@ -1,14 +1,13 @@
 # CAS D'USAGE 12 — Détection de Fraude Bancaire
 ## Détecter des transactions frauduleuses avec une classe extrêmement rare
 
-> **Auteur :** Emmanuel TSAGUE — Data Scientist / Data Analyst  
+> **Auteur :** TSAGUE EMMANUEL — Data Scientist / Data Analyst  
 > **Domaine :** Détection d'anomalies, Classe ultra-rare, Coûts asymétriques  
 > **Repository GitHub :** `bank-fraud-detection-ml`  
 > **Statut :** Portfolio — données simulées  
 > **Date :** Juin 2026
 
 ---
-
 ## 1. TITRE ET RÉSUMÉ EXÉCUTIF
 
 **"Détection de fraude bancaire : SMOTE + Isolation Forest + XGBoost sur une classe à 0,17 % — optimisation PR-AUC"**
@@ -20,7 +19,6 @@ Ce projet simule 500 000 transactions bancaires dont 0,17 % sont frauduleuses. I
 **Résultats simulés :** PR-AUC = 0,81 | Recall fraude = 0,85 | Précision fraude = 0,62.
 
 ---
-
 ## 2. PROBLÈME SPÉCIFIQUE : CLASSE ULTRA-RARE ET COÛTS ASYMÉTRIQUES
 
 > **PR-AUC (Area Under the Precision-Recall Curve) :** métrique préférée quand la classe positive est très rare. Contrairement à la ROC-AUC, le PR-AUC ne se laisse pas "tromper" par le grand nombre de vrais négatifs (transactions légitimes).
@@ -33,7 +31,6 @@ Ce projet simule 500 000 transactions bancaires dont 0,17 % sont frauduleuses. I
 → Un faux négatif coûte 30× plus qu'un faux positif. Le recall est la métrique prioritaire.
 
 ---
-
 ## 3. GÉNÉRATION DES DONNÉES SIMULÉES
 
 ```python
@@ -81,7 +78,6 @@ X_train, X_test, y_train, y_test = train_test_split(
 ```
 
 ---
-
 ## 4. ISOLATION FOREST — DÉTECTION SANS LABELS
 
 > **Isolation Forest :** algorithme de détection d'anomalies non-supervisé. Principe : une anomalie (point isolé, peu fréquent) est plus facile à "isoler" qu'un point normal. L'algorithme construit des arbres de décision aléatoires et mesure le nombre de coupures nécessaires pour isoler chaque point. Moins de coupures = plus anormal.
@@ -116,7 +112,6 @@ print(f"PR-AUC : {average_precision_score(y_test, y_score_iso):.4f}")
 ```
 
 ---
-
 ## 5. SMOTE — SURÉCHANTILLONNAGE SYNTHÉTIQUE
 
 > **SMOTE (Synthetic Minority Over-sampling Technique) :** crée des exemples synthétiques de la classe minoritaire en interpolant entre des exemples réels. Différent de la simple duplication (oversampling) car les exemples créés sont nouveaux mais réalistes.
@@ -166,7 +161,6 @@ print(f"PR-AUC : {average_precision_score(y_test, y_proba_xgb):.4f}")
 ```
 
 ---
-
 ## 6. COURBE PR — VISUALISATION
 
 ```python
@@ -200,7 +194,6 @@ plt.savefig("figures/fraude_evaluation.png", dpi=150, bbox_inches="tight")
 ```
 
 ---
-
 ## 7. ANALYSE DES ERREURS — FP ET FN CRITIQUES
 
 ```python
@@ -233,7 +226,6 @@ print(faux_negatifs[["montant", "heure", "nb_trans_24h", "dist_km"]].describe().
 ```
 
 ---
-
 ## 8. ANALYSE COÛT-BÉNÉFICE
 
 ```python
@@ -252,7 +244,6 @@ print(f"Bénéfice net simulé      : {cout_sans_modele - cout_avec_modele:,.0f}
 ```
 
 ---
-
 ## 9. ARCHITECTURE GITHUB
 
 ```
@@ -274,67 +265,6 @@ bank-fraud-detection-ml/
 ```
 
 ---
-
-## 10. README GITHUB
-
-```markdown
-# Bank Fraud Detection
-## Détection de fraude bancaire sur classe ultra-rare (0.17%)
-
-> **Auteur :** Emmanuel TSAGUE | **Données :** simulées
-
-## Approches comparées
-Isolation Forest (non-supervisé) · XGBoost + SMOTE (supervisé)
-
-## Résultats (simulés)
-PR-AUC = 0.81 · Recall fraude = 0.85 · Bénéfice simulé : 325 000 €
-```
-
----
-
-## 11. VERSION CV
-
-> Détection de fraude bancaire sur 500 000 transactions simulées (0,17 % fraudes) : Isolation Forest non-supervisé, SMOTE pour rééquilibrage (imbalanced-learn), XGBoost optimisé PR-AUC, analyse coût FP/FN, optimisation seuil de décision pour maximiser le recall — PR-AUC simulé 0,81.
-
----
-
-## 12. VERSION ENTRETIEN
-
-"La fraude représente 0,17 % des transactions — un déséquilibre extrême. La métrique à utiliser est PR-AUC, pas ROC-AUC, car cette dernière est trop optimiste quand les négatifs sont très nombreux. J'ai testé deux approches : Isolation Forest sans labels (non-supervisé) pour détecter les anomalies structurelles, et XGBoost avec SMOTE (supervisé). SMOTE crée des exemples synthétiques de fraudes en interpolant entre fraudeurs existants — mais uniquement sur le train. Le coût asymétrique (FN = 30× FP) justifie d'abaisser le seuil de décision pour maximiser le recall au détriment de la précision."
-
----
-
-## 13. POST LINKEDIN
-
-**0,17 % de fraudes. 99,83 % de transactions légitimes. Comment détecter l'infime ?**
-
-Ce cas d'usage traite la détection de fraude bancaire avec une classe ultra-rare.
-
-Les erreurs classiques :
-- Utiliser l'accuracy → 99.8% même en ne détectant rien
-- Ne pas SMOTE uniquement sur le train → data leakage
-- Utiliser ROC-AUC → trop optimiste quand les négatifs dominent
-
-Les solutions :
-- PR-AUC comme métrique principale
-- SMOTE uniquement sur le training set
-- Isolation Forest pour la détection non-supervisée
-- Seuil optimisé pour minimiser les FN (coût 30× plus élevé)
-
-`#FraudeDetection` `#MachineLearning` `#Anomaly` `#SMOTE` `#XGBoost` `#Finance`
-
----
-
-## 14. QUESTIONS D'ENTRETIEN
-
-**Q : Pourquoi PR-AUC est-il préférable à ROC-AUC pour la fraude ?**
-> La ROC-AUC intègre les vrais négatifs (TN). Quand il y a 500 000 légitimes et 850 fraudes, même un mauvais modèle a un très grand TN, ce qui "gonfle" le ROC-AUC. Le PR-AUC se concentre uniquement sur la classe positive — il mesure la capacité à trouver les vraies fraudes sans trop de fausses alarmes.
-
-**Q : Isolation Forest peut-il être utilisé seul en production ?**
-> Il est utile pour l'exploration et pour les cas sans labels historiques. En production, il est souvent complémentaire : Isolation Forest peut filtrer une première couche d'anomalies évidentes, puis un modèle supervisé affine la classification. Il est aussi utile pour détecter de nouveaux types de fraudes non vus pendant l'entraînement.
-
----
-
 ## 15. COMPÉTENCES DÉMONTRÉES
 
 | Compétence | Preuve |
@@ -347,4 +277,22 @@ Les solutions :
 
 ---
 
-*Fin du document — Emmanuel TSAGUE — CAS 12 — Fraude Bancaire*
+*Fin du document — TSAGUE EMMANUEL — CAS 12 — Fraude Bancaire*
+---
+
+## Contact & Liens
+
+**TSAGUE EMMANUEL** - Data Scientist
+
+| | |
+|---|---|
+| Email | [emmatsague@yahoo.fr](mailto:emmatsague@yahoo.fr) |
+| GitHub | [github.com/TSAGUE25](https://github.com/TSAGUE25) |
+| Formation | Datascientest 2024 |
+| Experience | EDF MAD EDVANCE |
+| Domaines | Machine Learning - Data Analysis - Energie |
+
+---
+
+> Toutes les donnees de ce depot sont simulees et anonymisees.  
+> Aucune donnee reelle ou confidentielle n'est presente.
