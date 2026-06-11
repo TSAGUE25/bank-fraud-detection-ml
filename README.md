@@ -1,4 +1,4 @@
-# Détection de Fraude Bancaire — Classe Ultra-Rare
+﻿# Détection de Fraude Bancaire — Classe Ultra-Rare
 
 > **SMOTE + Isolation Forest + XGBoost sur une classe à 0,17 % — optimisation PR-AUC**
 
@@ -114,9 +114,9 @@ AutoEncoder pour détection non-supervisée. Monitoring dérive concept. Graph N
 
 ---
 
-## Auteur
+## Contributors
 
-**Emmanuel TSAGUE** — Data Scientist / Data Analyst
+**TSAGUE Emmanuel** — Data Scientist / Data Analyst
 Domaine : Finance · Détection d'anomalies · Machine Learning
 GitHub : [TSAGUE25](https://github.com/TSAGUE25)
 
