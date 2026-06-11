@@ -20,3 +20,5 @@ outputs/
 dist/
 build/
 *.egg-info/
+
+!data_sample/fraud_transactions_simulated.csv
